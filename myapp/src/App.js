@@ -4,9 +4,11 @@ import './App.css';
 
 export default function App() {
   return (
-    <div className="App">
-      <p>New User Sign Up</p>
-      <Form />
+    <div className="bigContainer">
+      <h1>New User Sign Up</h1>
+      <div className='container'>
+        <Form />
+      </div>
     </div>
   );
 }
