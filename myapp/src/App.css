@@ -81,6 +81,13 @@ button {
   margin: 5%;
 }
 
+.user-container {
+  margin: 10%;
+}
+
+.users {
+  text-align: start;
+}
 
 @keyframes App-logo-spin {
   from {

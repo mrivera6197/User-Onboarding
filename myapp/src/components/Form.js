@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Input from './Input'
 import * as yup from 'yup'
 import axios from 'axios'
+import User from './User'
 
 export default function Form () {
 
@@ -11,16 +12,21 @@ export default function Form () {
         password: '',
     }
 
+    const defaultUsers = [
+        {id: 1, name: 'Mali', email: 'mrivera6197@gmail.com', password: '******'}
+    ]
+
+    const [users, setUsers] = useState(defaultUsers)
     const [formState, setFormState] = useState(defaultState)
     const [errors, setErrors] = useState({...defaultState, terms: ''})
-    const [disable, setDisabled] = useState(true)
+    const [disabled, setDisabled] = useState(true)
 
     //formState schema 
     let formSchema = yup.object().shape({
         name: yup.string().required('please provide name'),
         email: yup.string().required('please provide an email').email('this is not a valid email'),
-        password: yup.string().required('please provide a password'),
-        terms: yup.boolean().required('please agree to terms of service').oneOf([],'pleas agree to the terms and conditions')
+        password: yup.string().required('please provide a password').min(6, 'Passwords must be at least 6 characters long'),
+        terms: yup.boolean().required('please agree to terms of service').oneOf([true],'please agree to the terms and conditions')
     })
 
     useEffect(() => {
@@ -47,8 +53,17 @@ export default function Form () {
     const formSubmit = evt => {
         evt.preventDefault()
         console.log('form submitted!')
-        axios.post('https://reqres.in/api/users', formState)
-        .then(() => console.log('sucess'))
+        const newUser  ={
+            name: formState.name.trim(),
+            email: formState.email.trim(),
+            password: formState.password.trim(),
+        }
+        axios.post('https://reqres.in/api/users', newUser)
+        .then((res) => {
+            console.log('sucess')
+            setUsers([...users, res.data])
+            setFormState(defaultState)
+        })
         .catch(err => console.log('FAIL'))
     }
 
@@ -90,7 +105,19 @@ export default function Form () {
             <input name='terms' type='checkbox' onChange={inputChange}/>
                 Terms and Conditions
             </label>
-            <button>Submit</button>
+            <button disabled={disabled}>Submit</button>
+            <div className='user-container'>
+                <h2>Current Users</h2>
+                <div className='users'>
+                    {
+                        users.map(user => {
+                            return (
+                                <User key={user.id} info={user} />
+                            )
+                        })
+                    }
+                </div>
+            </div>
         </form>
     )
 }
