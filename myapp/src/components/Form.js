@@ -105,7 +105,7 @@ export default function Form () {
             <input name='terms' type='checkbox' onChange={inputChange}/>
                 Terms and Conditions
             </label>
-            <button disabled={disabled}>Submit</button>
+            <button id='submitBtn' disabled={disabled}>Submit</button>
             <div className='user-container'>
                 <h2>Current Users</h2>
                 <div className='users'>

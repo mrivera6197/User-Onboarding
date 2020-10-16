@@ -10,7 +10,7 @@ export default function Input (props) {
         </label>
         {
             errorMessage.length !== 0 &&
-                <p className='error'>{errorMessage}</p>
+                <p id='error'>{errorMessage}</p>
         }
         </>
     )
